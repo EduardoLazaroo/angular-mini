@@ -1,0 +1,182 @@
+1)
+
+
+[Comandos para criar os arquivos] 
+
+ng g component account/login 
+ng g component account/create-account 
+
+ng g component layout/home 
+ng g component layout/authentication 
+
+ng g component task/task-list 
+
+ng g service account/shared/account 
+ng g guard account/shared/auth 
+
+--------------------------//----------------------------------- 
+2)
+
+
+  { 
+    path: '', component: HomeComponent,
+    children: [
+      { path: '', component: TaskListComponent},
+      { path: 'task-form', component: TaskFormComponent }
+    ]
+  },
+  {
+    path: '', component: AuthenticationComponent,
+    children:[
+      { path:'', redirectTo: 'login', pathMatch: 'full' },
+      { path: 'login', component: LoginComponent },
+      { path: 'create-account', component: CreateAccountComponent  }
+    ]
+  }
+];
+
+--------------------------//----------------------------------- 
+3)
+
+
+const token = window.localStorage.getItem('token'); 
+if (token) { 
+    return true; 
+} else { 
+    this.router.navigate(['login']); 
+    return false; 
+} 
+
+
+constructor(private router: Router){} 
+
+--------------------------//----------------------------------- 
+4)
+
+
+login(user: any) {
+    return new Promise((resolve) => {
+        window.localStorage.setItem('token', 'meu-token');
+        resolve(true);
+    });
+}
+
+createAccount(account: any) {
+    return new Promise((resolve) => {
+        resolve(true);
+    });
+}
+
+--------------------------//----------------------------------- 
+5)
+
+
+async onSubmit() {
+    try {
+      const result = await this.accountService.login(this.login);
+      console.log(`Login efetuado: ${result}`);
+
+      // navego para a rota vazia novamente
+      this.router.navigate(['']);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+--------------------------//----------------------------------- 
+6-a)
+
+
+<div class="group">
+  <h2 class="text-center">Entrar</h2>
+  
+  <form (ngSubmit)="onSubmit()" #form="ngForm" class="form">
+    <div>
+      <label>E-mail</label>
+      <input class="form-control" type="email" name="email" id="email" [(ngModel)]="login.email" required />
+    </div>
+    <div >
+      <label>Senha</label>
+      <input class="form-control" type="password" name="password" id="password" [(ngModel)]="login.password" required />
+    </div>
+    <button type="submit" class="btn btn-primary btn-block" [disabled]="form.form.invalid">Entrar</button>
+    <button type="button" class="btn btn-link btn-block" [routerLink]="['/create-account']">Criar conta</button>
+  </form>
+</div>
+
+--------------------------//----------------------------------- 
+6-b)
+
+
+h2{
+    font: 700;
+    font-size: 30px;
+    color: white;
+    margin-top: 2rem;
+}
+
+.group{
+    background-color: rgb(0, 0, 0);
+    border: 3px solid  rgb(223, 24, 24);
+    color: white;
+    padding-left: 8rem;
+}
+
+button{
+    justify-content: center;
+    color: white;
+    margin: 1rem 0;
+    padding: 10px 40px;
+    background-color: rgb(13, 100, 100);
+}
+
+--------------------------//----------------------------------- 
+7-a)
+
+
+<div class="group">
+  <h2 class="text-center">Criar minha conta</h2>
+  
+  <form (ngSubmit)="onSubmit()" #form="ngForm">
+    <div>
+      <label>Nome</label>
+      <input type="text" name="email" id="email" [(ngModel)]="account.name" required />
+    </div>
+    <div>
+      <label>E-mail</label>
+      <input type="email" name="email" id="email" [(ngModel)]="account.email" required />
+    </div>
+    <div>
+      <label>Senha</label>
+      <input type="password" name="password" id="password" [(ngModel)]="account.password" required />
+    </div>
+    <button type="submit" class="btn btn-primary btn-block" [disabled]="form.form.invalid">Criar minha conta</button>
+  </form>
+</div>
+
+
+--------------------------//----------------------------------- 
+7-b)
+
+
+h2{
+    font: 700;
+    font-size: 30px;
+    color: white;
+    margin-top: 2rem;
+}
+
+.group{
+    background-color: rgb(0, 0, 0);
+    border: 3px solid  rgb(223, 24, 24);
+    color: white;
+    padding-left: 8rem;
+}
+
+button{
+    justify-content: center;
+    color: white;
+    margin: 1rem 0;
+    padding: 10px 40px;
+    background-color: rgb(13, 100, 100);
+}
