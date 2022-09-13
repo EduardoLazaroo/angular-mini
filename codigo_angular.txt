@@ -21,8 +21,7 @@ ng g guard account/shared/auth
   { 
     path: '', component: HomeComponent,
     children: [
-      { path: '', component: TaskListComponent},
-      { path: 'task-form', component: TaskFormComponent }
+      { path: '', component: AudioListComponent}
     ]
   },
   {
